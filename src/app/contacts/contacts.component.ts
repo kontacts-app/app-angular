@@ -1,8 +1,8 @@
 import { NgFor } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Contact } from '../models';
-import { mockContacts } from '../mocks';
+import { Contact, NewContact } from '../models';
+import { ContactsService } from '../contacts.service';
 
 @Component({
   selector: 'app-contacts',
@@ -14,7 +14,29 @@ import { mockContacts } from '../mocks';
 export class ContactsComponent implements OnInit {
   contacts: Iterable<Contact> = [];
 
+  constructor(
+    private service: ContactsService
+  ) { }
+
   ngOnInit(): void {
-    this.contacts = mockContacts;
+    this.refreshData();
+  }
+
+  createNew(): void {
+    let newName = prompt("Enter the contact name", "")
+      ?.trim();
+    
+    if (!newName || newName == "") {
+      console.warn("No new name provided; not creating any new contact");
+      this.refreshData();
+      return;
+    }
+
+    this.service.addNew({ name: newName });
+    this.refreshData();
+  }
+
+  private refreshData(): void {
+    this.contacts = this.service.getAll();
   }
 }
