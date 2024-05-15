@@ -1,7 +1,7 @@
 <div *ngIf="contact">
     <h2>{{ contact.name }}</h2>
 
-    <button (click)="back()">Back</button>
-    <button (click)="edit()">Edit</button>
-    <button (click)="delete()">Delete</button>
+    <button class="btn btn-outline-dark" (click)="back()">Back</button>
+    <button class="btn btn-primary" (click)="edit()"><i class="bi bi-pencil"></i> Edit</button>
+    <button class="btn btn-danger" (click)="delete()"><i class="bi bi-trash"></i> Delete</button>
 </div>

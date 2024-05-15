@@ -1,9 +1,50 @@
-<h2>Contacts</h2>
-<ul class="contacts">
-    <li *ngFor="let contact of contacts">
-        <a routerLink="/contacts/{{ contact.id }}">
-            {{ contact.name }}
-        </a>
-    </li>
-</ul>
-<button (click)="createNew()">Create new contact</button>
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+    <a class="navbar-brand" href="#">📇 Kontacts</a>
+</nav>
+
+<ng-template #newContactTemplate let-modal>
+    <form [formGroup]="newContactForm" (ngSubmit)="onSubmitNewContact()">
+        <div class="modal-header">
+            <h4 class="modal-title">New contact</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input 
+                        type="text"
+                        class="form-control"
+                        ngbAutofocus id="name"
+                        formControlName="name"
+                        name="name"
+                        autocomplete="off"
+                        autocapitalize="true"
+                        required
+                        nonBlank />
+                </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Cancel click')">Cancel</button>
+            <button type="submit" class="btn btn-primary" (click)="modal.close('Create click')" [disabled]="newContactForm.invalid">Create</button>
+        </div>
+    </form>
+</ng-template>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action list-group-item-primary" (click)="openNewContactModal(newContactTemplate)">
+                    <i class="bi bi-plus-lg"></i> Create new contact
+                </a>
+            </ul>
+            <ul class="list-group list-group-flush">
+                <a *ngFor="let contact of contacts" class="list-group-item list-group-item-action" routerLink="/contacts/{{ contact.id }}">
+                    {{ contact.name }}
+                </a>
+            </ul>
+        </div>
+    </div>
+</div>
+
