@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
 import { Contact } from '../models';
 import { ContactsService } from '../contacts.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NonBlankDirective } from '../nonblank.directive';
 
 @Component({
   selector: 'app-contacts',
@@ -42,6 +41,20 @@ export class ContactsComponent implements OnInit {
       const isBlank = (control.value || '').trim().length === 0;
       return isBlank ? { 'blank': 'value is blank' } : null;
     };
+  }
+
+  createNew(): void {
+    let newName = prompt("Enter the contact name", "")
+      ?.trim();
+    
+    if (!newName || newName == "") {
+      console.warn("No new name provided; not creating any new contact");
+      this.refreshData();
+      return;
+    }
+
+    this.service.addNew({ name: newName });
+    this.refreshData();
   }
 
   onSubmitNewContact(): void {
